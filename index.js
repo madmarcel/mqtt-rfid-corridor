@@ -2,6 +2,54 @@
 
 window.addEventListener('load', () => {
     
+    /* ---------------------------------- */
+
+    // these have to be lowercase
+    const GOODTAGS = [
+        '04ba56129c368000',
+        '04a856129c368000',
+        
+        '04382c4a312c8000',
+        '044d3052312c8000',
+
+        '047a56129c368000',
+        '04c456129c368000'
+
+    ];
+
+    const CLOSE_SIGNAL = 'closedoor';
+
+    /* ---------------------------------- */
+
+    // mqtt client
+    const client  = mqtt.connect('ws://localhost:8083');
+
+    client.on('connect', (e) => {
+        console.log('Connected to MQTT server', e);
+        client.subscribe('rfid');
+    });
+    
+    // process mqtt events
+    client.on('message', (topic, payload) => {
+        let t = topic.toLowerCase();
+        let p = payload.toString().toLowerCase();
+        console.log('RFID Read', t, p);
+
+        processTag(p);
+    });
+
+    let processTag = (tag) => {
+        if(GOODTAGS.indexOf(tag) > -1) {
+            openDoorEvent();
+        } else if(tag === CLOSE_SIGNAL) {
+            closeDoorEvent();
+        } else {
+            badReadEvent();
+        }
+    }
+
+    /* ---------------------------------- */
+
     let ignore = false;
     
     const STATES = {
@@ -13,6 +61,34 @@ window.addEventListener('load', () => {
 
     let currentState = STATES.CLOSED;
     let nextState = null;
+
+    let openDoorEvent = () => {
+        if(isClosed()) {
+            playSound('successread', { volume: 1.0 });
+            ignore = true;
+            currentState = STATES.OPENING;
+            setTimeout(openDoors, 400);
+        } else {
+            playSound('ignoreread', { volume: 1.0 });
+        }
+    }
+
+    let closeDoorEvent = () => {
+        if(isOpen()) {
+            playSound('bloop', { volume: 1.0 });
+            ignore = true;
+            currentState = STATES.CLOSING;
+            setTimeout(closeDoors, 400);
+        } else {
+            playSound('click', { volume: 1.0 });
+        }
+    }
+
+    let badReadEvent = () => {
+        console.log('Bad read event');
+    }
+
+    /* ---------------------------------- */
 
     let compareState = (state) => {
         return currentState === STATES[state];
@@ -46,27 +122,13 @@ window.addEventListener('load', () => {
     window.addEventListener('keyup', e => {
         if(!ignore) {
             if(e.keyCode === 32) {
-                if(isOpen()) {
-                    playSound('bloop', { volume: 1.0 });
-                    ignore = true;
-                    currentState = STATES.CLOSING;
-                    setTimeout(closeDoors, 400);
-                } else {
-                    playSound('click', { volume: 1.0 });
-                }
+                closeDoorEvent();
             }
             if(e.keyCode === 13) {
-                if(isClosed()) {
-                    playSound('successread', { volume: 1.0 });
-                    ignore = true;
-                    currentState = STATES.OPENING;
-                    setTimeout(openDoors, 400);
-                } else {
-                    playSound('ignoreread', { volume: 1.0 });
-                }
+                openDoorEvent();
             }
-            if(e.keyCode === 64) {
-                
+            if(e.keyCode === 82) {
+                badReadEvent();
             }
         }
     });
