@@ -12,6 +12,8 @@ Demo is here:
 
 https://madmarcel.github.io/mqtt-rfid-corridor/
 
+(Only works in Chrome - acts weird in Firefox)
+
 **Controls**
 
 Arrow-keys - move
