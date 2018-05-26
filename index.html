@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Marcel">
+        
+        <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+        <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+        
+        <link rel="stylesheet" href="style.css" />
+        <script src="sound.js"></script>
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <a-scene>
+            <a-assets>
+                <a-asset-item id="corridor-half" src="corridor2.gltf" crossOrigin="anonymous"></a-asset-item>
+                <a-asset-item id="bulk-half" src="bulkhead.gltf" crossOrigin="anonymous"></a-asset-item>
+                <a-asset-item id="door" src="door.gltf" crossOrigin="anonymous"></a-asset-item>
+                <a-asset-item id="hangar" src="ScifiHangarScene.gltf" crossOrigin="anonymous"></a-asset-item>
+                <a-asset-item id="rescue" src="rescue.gltf" crossOrigin="anonymous"></a-asset-item>
+                <a-asset-item id="explorer" src="explorer.gltf" crossOrigin="anonymous"></a-asset-item>
+            </a-assets>
+
+            <!-- two static doors -->
+            <a-gltf-model src="#door" position="0 0 3.05" rotation="0 0 0" scale="0.23 0.3 0.20"></a-gltf-model>
+            <a-gltf-model src="#door" position="0.001 0 3.2" rotation="0 180 0" scale="0.23 0.3 0.20"></a-gltf-model>
+
+            <!-- static door frame -->
+            <a-gltf-model src="#bulk-half" scale="0.2 0.3 0.24" position="0 0 3.2" rotation="0 -90 0"></a-gltf-model>
+            <a-gltf-model src="#bulk-half" scale="0.2 0.3 0.24" position="0 0 3.0" rotation="0 90 0"></a-gltf-model>
+
+            <!-- lots of corridor pieces -->
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 3.0"></a-gltf-model>
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 1.5" rotation="0 180 0"></a-gltf-model>
+
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 1.5"></a-gltf-model>
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 0" rotation="0 180 0"></a-gltf-model>
+
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 0"></a-gltf-model>
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -1.5" rotation="0 180 0"></a-gltf-model>
+            
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -1.5"></a-gltf-model>
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -3.0" rotation="0 180 0"></a-gltf-model>
+
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -3.0"></a-gltf-model>
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -4.5" rotation="0 180 0"></a-gltf-model>
+
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -4.5"></a-gltf-model>
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -6.0" rotation="0 180 0"></a-gltf-model>
+
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -6.0"></a-gltf-model>
+            <a-gltf-model src="#corridor-half" scale="0.2 0.3 0.3" position="0 0 -7.5" rotation="0 180 0"></a-gltf-model>
+
+            <!-- frame for animated door -->
+            <a-gltf-model src="#bulk-half" scale="0.2 0.3 0.24" position="0 0 -7.5" rotation="0 -90 0"></a-gltf-model>
+            <a-gltf-model src="#bulk-half" scale="0.2 0.3 0.24" position="0 0 -7.7" rotation="0 90 0"></a-gltf-model>
+
+            <!-- two animated doors -->
+            <a-gltf-model id="leftdoor" src="#door" position="0 0 -7.67" rotation="0 0 0" scale="0.23 0.3 0.20">
+                <a-animation begin="open" easing="ease-out" attribute="position" from="0 0 -7.67" to="-2 0 -7.67"></a-animation>
+                <a-animation begin="close" dur="500" easing="ease-in" attribute="position" from="-2 0 -7.67" to="0 0 -7.67"></a-animation>
+            </a-gltf-model>
+            <a-gltf-model id="rightdoor" src="#door" position="0.001 0 -7.55" rotation="0 180 0" scale="0.23 0.3 0.20">
+                <a-animation begin="open" easing="ease-out" attribute="position" from="0.001 0 -7.55" to="2 0 -7.55"></a-animation>
+                <a-animation begin="close" dur="500" easing="ease-in" attribute="position" from="2 0 -7.55" to="0.001 0 -7.55"></a-animation>
+            </a-gltf-model>
+
+            <!-- environment outside the corridor/hallway - not needed, but it does do something to the lighting? -->
+            <a-entity environment="preset: starry" position="0 -4 0"></a-entity>
+
+            <!-- the hangar - also found online -->
+            <a-gltf-model src="#hangar" position="0 -1 -30" rotation="0 90 0" shadow="receive: true"></a-gltf-model>
+
+            <!-- plane parallel to ground. Closes holes in the hangar floor -->
+            <a-plane height="50" width="60" rotation="-90 0 0" color="white" position="0 -2 -30"></a-plane>
+            
+            <!-- some spaceships I found online -->
+            <a-gltf-model src="#rescue" position="16.8 -2.13 -32.2" rotation="0 -55 0" scale="0.07 0.07 0.07" shadow="cast: true"></a-gltf-model>
+            <a-gltf-model src="#explorer" position="-10.6 -3.62 -30.5" rotation="0 125 0" scale="0.08 0.08 0.08" shadow="cast: true"></a-gltf-model>
+
+            <!-- lights -->
+            <a-light type="ambient" color="#CCC" position="0 0 -5" intensity="0.05"></a-light>
+
+            <!-- spotlight on the door to give it a bit of contrast -->
+            <a-light id='doorspot' type="spot" color="#CCC" position="0.0 2.8 -4.83" intensity="0.3" rotation="-30 0 0"></a-light>
+
+            <!-- light up the hangar and adds shadows under the ships -->
+            <a-light id='hangar' type="point" color="#CCC" position="0 10 -40" intensity="0.3" light="castShadow:true"></a-light>
+
+            <a-light id='one' type="point" color="#CCC" position="0 4.9 -10" intensity="0.3"></a-light>
+            
+            <a-light id='two' type="point" color="#CCC" position="8.5 7.0 -19" intensity="0.2"></a-light>
+
+            <a-light id='three' type="point" color="#CCC" position="8.5 7.0 -19" intensity="0.2"></a-light>
+
+            <!-- on mobile...this may work? very flakey, can't get the controls to appear consistently -->
+            <a-entity daydream-controls></a-entity>
+        </a-scene>
+    </body>
+</html>
