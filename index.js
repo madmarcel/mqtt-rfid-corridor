@@ -38,6 +38,7 @@ window.addEventListener('load', () => {
         processTag(p);
     });
 
+    // check the received tag
     let processTag = (tag) => {
         if(GOODTAGS.indexOf(tag) > -1) {
             openDoorEvent();
@@ -56,7 +57,8 @@ window.addEventListener('load', () => {
         'CLOSED': 0,
         'OPENING': 1,
         'OPEN': 2,
-        'CLOSING': 3
+        'CLOSING': 3,
+        'BADREAD': 4
     };
 
     let currentState = STATES.CLOSED;
@@ -85,7 +87,17 @@ window.addEventListener('load', () => {
     }
 
     let badReadEvent = () => {
-        console.log('Bad read event');
+        if(!isAlarm()) {
+            playSound('nuh-uh', { volume: 1.0 });
+            if(isOpen()) {
+                setTimeout(closeDoors, 400);
+            }
+            ignore = true;
+            currentState = STATES.BADREAD;
+            startAlarm();
+        } else {
+            playSound('nuh-uh', { volume: 1.0 });
+        }
     }
 
     /* ---------------------------------- */
@@ -100,6 +112,33 @@ window.addEventListener('load', () => {
 
     let isClosed = () => {
         return compareState('CLOSED');
+    }
+
+    let isAlarm = () => {
+        return compareState('BADREAD');
+    }
+
+    /* ---------------------------------- */
+
+    let startRedLights = () => {
+        document.querySelector('#redlight').emit('start');
+    }
+
+    let stopRedLights = () => {
+        document.querySelector('#redlight').emit('stop');
+    }
+
+    let startAlarm = () => {
+        startRedLights();
+        playSound('alarm', { volume: 0.7},() => {
+            playSound('alarm', { volume: 1.0},() => {
+                playSound('alarm', { volume: 0.7},() => {
+                    currentState = STATES.CLOSED;
+                    ignore = false;
+                    stopRedLights();
+                });
+            })
+        })
     }
 
     let openDoors = () => {

@@ -16,6 +16,12 @@ var sounds = {
     "ignoreread" : {
         url : "activate04.wav"
     },
+    "nuh-uh": {
+        url: "scalarm.wav"
+    },
+    "alarm": {
+        url: "00alarmloop01.wav"
+    }
   };
   
   var soundContext = new AudioContext();
@@ -43,7 +49,7 @@ var sounds = {
     request.send();
   }
   
-  function playSound(name, options){
+  function playSound(name, options, endCallback){
     var sound = sounds[name];
     var soundVolume = sounds[name].volume || 1;
   
@@ -64,6 +70,9 @@ var sounds = {
   
       volume.connect(soundContext.destination);
       source.connect(volume);
+      if(endCallback) {
+        source.addEventListener('ended', endCallback, false);
+      }
       source.start(0);
     }
   }

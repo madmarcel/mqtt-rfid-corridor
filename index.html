@@ -83,6 +83,11 @@
             <!-- lights -->
             <a-light type="ambient" color="#CCC" position="0 0 -5" intensity="0.05"></a-light>
 
+            <a-light id='redlight' type="spot" color="red" position="0.0 2.8 -4.83" intensity="0.0" rotation="-30 0 0">
+                <a-animation begin="start" easing="ease-out" attribute="intensity" from="0.1" to="1.0" direction="alternate" repeat="indefinite" dur="981" end="stop"></a-animation>
+                <a-animation begin="stop" easing="ease-out" attribute="intensity" to="0.0"></a-animation>
+            </a-light>
+
             <!-- spotlight on the door to give it a bit of contrast -->
             <a-light id='doorspot' type="spot" color="#CCC" position="0.0 2.8 -4.83" intensity="0.3" rotation="-30 0 0"></a-light>
 
