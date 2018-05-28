@@ -6,13 +6,13 @@ window.addEventListener('load', () => {
 
     // these have to be lowercase
     const GOODTAGS = [
-        '04ba56129c368000',
+        '04ba56129c368000', // luke
         '04a856129c368000',
         
-        '04382c4a312c8000',
-        '044d3052312c8000',
+        /* '04382c4a312c8000', // darth
+        '044d3052312c8000', */
 
-        '047a56129c368000',
+        '047a56129c368000', // rey
         '04c456129c368000'
 
     ];
